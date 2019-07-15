@@ -463,7 +463,7 @@ describe('assign object property values to new variables while destructuring. ',
 
   describe('for simple objects', function() {
     it('use a colon after the property name, like so `propertyName: newName`', () => {
-      const {y} = {'x: 1'};
+      const {x} = {x: 1};
       expect(y).toEqual(1);
     });
 
@@ -495,7 +495,7 @@ describe('rest with destructuring', () => {
 
   it('rest parameter must be last', () => {
     const [all] = [1, 2, 3, 4];
-    //expect(all).toEqual([1, 2, 3, 4]);
+    expect(all).toEqual([1, 2, 3, 4]);
   });
 
   it('assign rest of an array to a variable', () => {
