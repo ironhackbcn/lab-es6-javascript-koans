@@ -369,9 +369,7 @@ describe('arrow functions. ', () => {
 
   class LexicallyBound {
     getFunction() {
-      return () => {
-        return new LexicallyBound()
-      }; /*changes might go here*/
+      return () => this; /*changes might go here*/
     }
 
     getArgumentsFunction() {
@@ -393,7 +391,7 @@ describe('arrow functions. ', () => {
       let bound = new LexicallyBound();
       let fn = bound.getFunction();
       let anotherObj = {};
-      let expected = anotherObj; //change this
+      let expected = bound; //change this
 
       expect(fn.call(anotherObj)).toBe(expected);
     });
@@ -472,7 +470,7 @@ describe('assign object property values to new variables while destructuring. ',
 
   describe('for function parameter names', function() {
     it('do it the same way, with a colon behind it', () => {
-      const fn = ({ x , y}) => {
+      const fn = ({ x, y }) => {
         expect(y).toEqual(1);
       };
       fn({ x: 1, y: 1 });
@@ -482,7 +480,7 @@ describe('assign object property values to new variables while destructuring. ',
       const fn = ({ x, y }) => {
         expect(y).toEqual(3);
       };
-      fn({y:3});
+      fn({ y: 3 });
     });
   });
 });
@@ -545,8 +543,7 @@ describe('spread with strings', () => {
 
 describe('class creation', () => {
   it('is as simple as `class XXX {}`', function() {
-    class TestClass {
-    };
+    class TestClass {}
 
     const instance = new TestClass();
     expect(typeof instance).toBe('object');
@@ -569,7 +566,6 @@ describe('class creation', () => {
 
     const user = new User(42);
     expect(user.id).toEqual(42);
-    
   });
   it('defining a method is simple', function() {
     class User {
