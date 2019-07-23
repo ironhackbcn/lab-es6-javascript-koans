@@ -246,29 +246,34 @@ describe("destructuring also works on strings. ", () => {
 
 describe("destructuring objects. ", () => {
   it("is simple", () => {
-    const {x} = { x: 1 };
+    const { x } = { x: 1 };
     expect(x).toEqual(1);
   });
 
   describe("nested", () => {
     it("multiple objects", () => {
       const magic = { first: 23, second: 42 };
-      const {first, second}  = magic;
+      const { first, second } = magic;
       expect(second).toEqual(42);
     });
     it("object and array", () => {
-      const { z:[,x] } = { z: [23, 42] };
-     expect(x).toEqual(42);
+      const {
+        z: [, x]
+      } = { z: [23, 42] };
+      expect(x).toEqual(42);
     });
     it("array and object", () => {
-      const [anything,[{env,lang}]] = [null, [{ env: "browser", lang: "ES6" }]];
-      expect(lang).toEqual('ES6');
+      const [anything, [{ env, lang }]] = [
+        null,
+        [{ env: "browser", lang: "ES6" }]
+      ];
+      expect(lang).toEqual("ES6");
     });
   });
 
   describe("interesting", () => {
     it("missing refs become undefined", () => {
-      const {x,y,z} = { x: 1, y: 2 };
+      const { x, y, z } = { x: 1, y: 2 };
       expect(z).toEqual(undefined);
     });
   });
@@ -276,28 +281,28 @@ describe("destructuring objects. ", () => {
 
 describe("destructuring can also have default values. ", () => {
   it("for an empty array", () => {
-    const [a=1] = [];
-    expect(a).toEqual(1)
+    const [a = 1] = [];
+    expect(a).toEqual(1);
   });
 
   it("for a missing value", () => {
-    const [a, b=2, c] = [1, , 3];
+    const [a, b = 2, c] = [1, , 3];
     expect(b).toEqual(2);
   });
 
   it("in an object", () => {
-    const [a, b=2] = [{ a: 1 }];
+    const [a, b = 2] = [{ a: 1 }];
     expect(b).toEqual(2);
   });
 
   it("if the value is undefined", () => {
-    const { a, b=2 } = { a: 1, b: undefined };
-   expect(b).toEqual(2);
+    const { a, b = 2 } = { a: 1, b: undefined };
+    expect(b).toEqual(2);
   });
 
   it("also a string works with defaults", () => {
-    const [a, b=2] = "1";
-    expect(a).toEqual('1');
+    const [a, b = 2] = "1";
+    expect(a).toEqual("1");
     expect(b).toEqual(2);
   });
 });
@@ -308,41 +313,42 @@ describe("destructuring can also have default values. ", () => {
 
 describe("arrow functions. ", () => {
   it("are shorter to write", function() {
-    let func = ()=>{'I am func'}
-    expect(func()).toBe('I am func');
+    let func = () => {
+      return "I am func";
+    };
+    expect(func()).toBe("I am func");
   });
 
   it("a single expression, without curly braces returns too", function() {
-    /*let func = () => .........;*/
-    //expect(func()).toBe('I return too');
+    let func = () => "I return too";
+    expect(func()).toBe("I return too");
   });
 
   it("one parameter can be written without parens", () => {
-    /* let func = ........;*/
-    //expect(func(25)).toEqual(24)
+    let func = param => param - 1;
+    expect(func(25)).toEqual(24);
   });
 
   it("many params require parens", () => {
-    /* let func = ........;*/
-    //expect(func(23,42)).toEqual(23+42)
+    let func = (numberA, numberB) => numberA + numberB;
+    expect(func(23, 42)).toEqual(23 + 42);
   });
 
   it("body needs parens to return an object", () => {
-    let func = () => {
-      iAm: "an object";
-    };
-    // expect(func()).toEqual({iAm: 'an object'});
+    let func = () => ({ iAm: "an object" });
+
+    expect(func()).toEqual({ iAm: "an object" });
   });
 
   class LexicallyBound {
     getFunction() {
       return () => {
-        return new LexicallyBound(); /*changes might go here*/
+         return this; /*changes might go here*/
       };
     }
 
     getArgumentsFunction() {
-      return function() {
+      return ()=> {
         return arguments;
       }; /*or here*/
     }
@@ -353,7 +359,7 @@ describe("arrow functions. ", () => {
       let bound = new LexicallyBound();
       let fn = bound.getFunction();
 
-      //expect(fn()).toBe(bound);
+      expect(fn()).toBe(bound);
     });
 
     it("can NOT bind a different context", function() {
@@ -362,7 +368,7 @@ describe("arrow functions. ", () => {
       let anotherObj = {};
       let expected = anotherObj; //change this
 
-      //expect(fn.call(anotherObj)).toBe(expected);
+      expect(fn.call(anotherObj)).toBe(expected);
     });
 
     it("`arguments` doesnt work inside arrow functions", function() {
