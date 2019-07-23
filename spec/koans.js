@@ -343,13 +343,13 @@ describe("arrow functions. ", () => {
   class LexicallyBound {
     getFunction() {
       return () => {
-         return this; /*changes might go here*/
+        return new LexicallyBound(); /*changes might go here*/
       };
     }
 
     getArgumentsFunction() {
       return ()=> {
-        return arguments;
+        return function() { return arguments; }; /*or here*/
       }; /*or here*/
     }
   }
