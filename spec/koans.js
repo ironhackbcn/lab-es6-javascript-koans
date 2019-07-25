@@ -343,15 +343,15 @@ describe("arrow functions. ", () => {
   class LexicallyBound {
     getFunction() {
       return () => {
-        return new LexicallyBound(); /*changes might go here*/
+       return  this /*changes might go here*/
       };
     }
 
     getArgumentsFunction() {
       return ()=> {
-        return function() { return arguments; }; /*or here*/
+         return arguments; }; /*or here*/
       }; /*or here*/
-    }
+    
   }
 
   describe("arrow functions have lexical `this`, no dynamic `this`", () => {
@@ -366,7 +366,7 @@ describe("arrow functions. ", () => {
       let bound = new LexicallyBound();
       let fn = bound.getFunction();
       let anotherObj = {};
-      let expected = anotherObj; //change this
+      let expected = bound; //change this
 
       expect(fn.call(anotherObj)).toBe(expected);
     });
@@ -375,7 +375,7 @@ describe("arrow functions. ", () => {
       let bound = new LexicallyBound();
       let fn = bound.getArgumentsFunction();
 
-      //expect(fn(1, 2).length).toEqual(0);
+      expect(fn(1, 2).length).toEqual(0);
     });
   });
 });
@@ -384,8 +384,9 @@ describe("destructuring function parameters. ", () => {
   describe("destruct parameters", () => {
     it("multiple params from object", () => {
       const fn = () => {
-        //expect(id).toEqual(42);
-        //expect(name).toEqual('Wolfram');
+        let {name,id}=user;
+        expect(id).toEqual(42);
+        expect(name).toEqual('Wolfram');
       };
       const user = { name: "Wolfram", id: 42 };
       fn(user);
@@ -393,7 +394,8 @@ describe("destructuring function parameters. ", () => {
 
     it("multiple params from array/object", () => {
       const fn = ([]) => {
-        //expect(name).toEqual('Alice');
+      //aqui//
+        expect(name).toEqual('Alice');
       };
       const users = [{ name: "nobody" }, { name: "Alice", id: 42 }];
       fn(users);
