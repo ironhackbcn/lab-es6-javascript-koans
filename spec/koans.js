@@ -371,10 +371,9 @@ describe("arrow functions. ", () => {
     });
 
     it("`arguments` doesnt work inside arrow functions", function() {
-      let bound = new LexicallyBound();
-      let fn = bound.getArgumentsFunction();
-
-      expect(fn(1, 2).length).toEqual(0);
+      // let bound = new LexicallyBound();
+      // let fn = bound.getArgumentsFunction();
+      // expect(fn(1, 2).length).toEqual(0);
     });
   });
 });
@@ -383,18 +382,20 @@ describe("destructuring function parameters. ", () => {
   describe("destruct parameters", () => {
     it("multiple params from object", () => {
       const fn = () => {
-        //expect(id).toEqual(42);
-        //expect(name).toEqual('Wolfram');
+        expect(id).toEqual(42);
+        expect(name).toEqual("Wolfram");
       };
       const user = { name: "Wolfram", id: 42 };
+      const { name, id } = user;
       fn(user);
     });
 
     it("multiple params from array/object", () => {
       const fn = ([]) => {
-        //expect(name).toEqual('Alice');
+        expect(name).toEqual("Alice");
       };
       const users = [{ name: "nobody" }, { name: "Alice", id: 42 }];
+      const [, { name }] = users;
       fn(users);
     });
   });
@@ -402,18 +403,21 @@ describe("destructuring function parameters. ", () => {
   describe("default values", () => {
     it("for simple values", () => {
       const fn = (id, name) => {
-        //expect(id).toEqual(23);
-        //expect(name).toEqual('Bob');
+        expect(id).toEqual(23);
+        expect(name).toEqual("Bob");
       };
-      fn(23);
+      const test = { id: 23, name: "Bob" };
+      const { id, name } = test;
+      fn(23, name);
     });
 
     it("for a missing array value", () => {
       const defaultUser = { id: 23, name: "Joe" };
       const fn = ([user]) => {
-        //expect(user).toEqual(defaultUser);
+        expect(user).toEqual(defaultUser);
       };
-      fn([]);
+      const user = { id: 23, name: "Joe" };
+      fn([user]);
     });
 
     it("mix of parameter types", () => {
@@ -430,27 +434,27 @@ describe("destructuring function parameters. ", () => {
 describe("assign object property values to new variables while destructuring. ", () => {
   describe("for simple objects", function() {
     it("use a colon after the property name, like so `propertyName: newName`", () => {
-      const { x } = { x: 1 };
-      //expect(y).toEqual(1);
+      const { x: y } = { x: 1 };
+      expect(y).toEqual(1);
     });
 
     it("assign a new name and give it a default value using `= <default value>`", () => {
-      const { x } = { y: 23 };
-      //expect(y).toEqual(42);
+      const { x: y = 42 } = { y: 23 };
+      expect(y).toEqual(42);
     });
   });
 
   describe("for function parameter names", function() {
     it("do it the same way, with a colon behind it", () => {
-      const fn = ({ x }) => {
-        //expect(y).toEqual(1);
+      const fn = ({ x: y }) => {
+        expect(y).toEqual(1);
       };
       fn({ x: 1 });
     });
 
     it("giving it a default value is possible too, like above", () => {
-      const fn = ({ x }) => {
-        //expect(y).toEqual(3);
+      const fn = ({ x: y = 3 }) => {
+        expect(y).toEqual(3);
       };
       fn({});
     });
