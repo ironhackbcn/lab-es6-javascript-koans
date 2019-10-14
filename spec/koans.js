@@ -287,7 +287,7 @@ describe('destructuring objects. ', () => {
     });
     it('array and object', () => {
       
-      const lang = [null, [{ env: null, lang: 'ES6' }]];
+      const lang = [null, [{ env: 'browser', lang: 'ES6' }]];
       //expect(lang).toEqual('ES6');
     });
   });
@@ -493,8 +493,8 @@ describe('assign object property values to new variables while destructuring. ',
 describe('rest with destructuring', () => {
 
   it('rest parameter must be last', () => {
-    const [all] = [1, 2, 3, 4];
-    //expect(all).toEqual([1, 2, 3, 4]);
+    const [...all] = [1, 2, 3, 4];
+    expect(all).toEqual([1, 2, 3, 4]);
   });
 
   it('assign rest of an array to a variable', () => {
@@ -561,9 +561,9 @@ describe('class creation', () => {
   });
 
   it('class is block scoped', () => {
-    class Inside {}
+    class canBeFound {}
     { class Inside { } }
-    //expect(typeof Inside).toBe('undefined');
+    expect(typeof Inside).toBe('undefined');
   });
 
   it('special method is `constructor`', function () {
@@ -590,21 +590,23 @@ describe('class creation', () => {
 
   it('multiple methods need no commas (opposed to object notation)', function () {
     class User {
-      wroteATest() { this.everWroteATest = true; }
+      constructor() { this.everWroteATest = true;}
+      wroteATest() { this.everWroteATest = false; }
       
-      isLazy() { return true}
+      isLazy() { return this.everWroteATest}
     }
 
     const tester = new User();
     expect(tester.isLazy()).toBe(true);
-
     tester.wroteATest();
-    //expect(tester.isLazy()).toBe(false);
+    expect(tester.isLazy()).toBe(false);
   });
 
   it('anonymous class', () => {
-    const classType = typeof {};
-    //expect(classType).toBe('function');
+    const classType = typeof class{
+      constructor (){}
+    };
+    expect(classType).toBe('function');
   });
 
 });
