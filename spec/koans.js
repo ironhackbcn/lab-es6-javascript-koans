@@ -546,8 +546,8 @@ describe('spread with strings', () => {
   });
 
   it('works anywhere inside an array (must not be last)', function () {
-    const letters = ['a', 'bcd', 'e', 'f']
-    letters.join(' ');
+    const letters1 = ['a', 'bcd', 'e', 'f']
+    const letters = letters1.join('');
     expect(letters.length).toEqual(6);
   });
 
@@ -570,6 +570,7 @@ describe('class creation', () => {
 
   it('class is block scoped', () => {
     class Inside { }
+
     { class Inside { } }
     expect(typeof Inside).toBe('undefined');
   });
@@ -577,21 +578,25 @@ describe('class creation', () => {
   it('special method is `constructor`', function () {
     class User {
       constructor(id) {
+        this.id = id;
 
       }
     }
 
     const user = new User(42);
-    //expect(user.id).toEqual(42);
+    expect(user.id).toEqual(42);
   });
 
   it('defining a method is simple', function () {
     class User {
+      writesTests() {
+        return false;
+      }
 
     }
 
     const notATester = new User();
-    //expect(notATester.writesTests()).toBe(false);
+    expect(notATester.writesTests()).toBe(false);
   });
 
   it('multiple methods need no commas (opposed to object notation)', function () {
@@ -601,14 +606,14 @@ describe('class creation', () => {
     }
 
     const tester = new User();
-    //expect(tester.isLazy()).toBe(true);
+    expect(tester.isLazy()).toBe(true);
     tester.wroteATest();
-    //expect(tester.isLazy()).toBe(false);
+    expect(tester.isLazy()).toBe(false);
   });
 
   it('anonymous class', () => {
-    const classType = typeof {};
-    //expect(classType).toBe('function');
+    const classType = typeof function () { };
+    expect(classType).toBe('function');
   });
 
 });
